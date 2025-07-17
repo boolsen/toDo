@@ -1,0 +1,21 @@
+Todo app:
+
+todo-items:
+    Objects
+    Should contain:
+        -title
+        -description
+        -due date
+        -priority
+        -notes
+        -checklist
+
+todo-lists:
+    Should be objects that contains todo items
+    There should be a default list where items appear if no custom list has been created
+    Contains:
+        -todo-items
+        -title
+        -description
+
+keep todo logic in modules seperate from DOM-related logic
