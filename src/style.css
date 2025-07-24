@@ -1,13 +1,104 @@
 :root {
+    --bg-clr: yellow;
+}
 
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 20px;
 }
 
 .main {
     display: grid;
-    grid-template-columns: 1fr, 3fr;
+    grid-template-columns: 1fr 3fr;
     grid-template-rows: 150px 1fr;
+    padding: 5svh;
 }
 
 .available-lists {
-    
+    color: red;
+    grid-area: 2/1/3/2;
 }
+
+.current-list-container {
+    grid-area: 2/2/3/3;
+}
+
+.list-item {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid black;
+    border-radius: 20px 20px;
+    background: rgb(229, 255, 112);
+    margin: 10px 10px;
+    padding: 20px;
+    gap: 20px 10px;
+}
+
+.list-item > * {
+    background: white;
+    margin: 5px;
+    border-radius: 10px 10px;
+    padding: 5px;
+    position: relative;
+}
+
+.list-item > *::before {
+    content: '';
+    position: relative;
+    left: -5px;
+    top: -15px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px 5px;
+    padding: 5px;
+}
+
+.list-item-note::before {
+    content: 'note';
+}
+
+.list-item-title::before {
+    content: 'title';
+}
+
+.list-item-duedate::before {
+    content: 'due date';
+}
+
+.list-item-checklist::before {
+    content: 'check list';
+}
+
+.list-item-description::before {
+    content: 'description';
+}
+
+.list-item-title {
+    grid-area: 1/1/2/2;
+}
+
+.list-item-description {
+    grid-area: 2/1/4/2;
+}
+
+.list-item-duedate {
+    grid-area: 1/2/2/3;
+}
+
+.list-item-note {
+    grid-area: 2/2/3/3;
+}
+
+.list-item-checklist {
+    grid-area: 3/2/4/3;
+}
+
