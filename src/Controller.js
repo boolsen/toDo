@@ -6,6 +6,7 @@ class Controller {
         this.todoLists = [this.activeList];
         this.activeListContainer = document.querySelector('.current-list-container')
         this.availableListsContainer = document.querySelector('.available-lists');
+        const self = this;
     }
 
     createTodoList(title) {
@@ -19,49 +20,70 @@ class Controller {
         }
     }
 
+    resetActiveListContainer() {
+        this.activeListContainer.innerHTML = '';
+    }
+
     drawItem(item) {
         let container = document.createElement("div");
-            container.classList.add("list-item");
-            container.classList.add('before-title');
+        container.classList.add("list-item");
+        container.classList.add("list-item-collapsed");
+        container.classList.add('before-list-item');
 
-            let titleElement = document.createElement("h3");
-            titleElement.classList.add("list-item-title");
-            titleElement.innerText = item.title;
-            container.append(titleElement);
+        let titleElement = document.createElement("h3");
+        titleElement.classList.add("list-item-title");
+        titleElement.classList.add('before-list-item');
+        titleElement.innerText = item.title;
+        container.append(titleElement);
 
-            let descriptionElement = document.createElement('span');
-            descriptionElement.classList.add('list-item-description');
-            descriptionElement.innerText = item.description;
-            container.append(descriptionElement);
+        let descriptionElement = document.createElement('span');
+        descriptionElement.classList.add('list-item-description');
+        descriptionElement.classList.add('before-list-item');
+        descriptionElement.innerText = item.description;
+        container.append(descriptionElement);
 
-            let dueDateElement = document.createElement('span');
-            dueDateElement.classList.add('list-item-duedate');
-            dueDateElement.innerText = item.dueDate;
-            container.append(dueDateElement);
+        let dueDateElement = document.createElement('span');
+        dueDateElement.classList.add('list-item-duedate');
+        dueDateElement.classList.add('before-list-item');
+        dueDateElement.innerText = item.dueDate;
+        container.append(dueDateElement);
 
-            let noteElement = document.createElement('em');
-            noteElement.classList.add('list-item-note');
-            noteElement.innerText = item.notes;
-            container.append(noteElement);
+        let noteElement = document.createElement('em');
+        noteElement.classList.add('list-item-note');
+        noteElement.classList.add('before-list-item');
+        noteElement.innerText = item.notes;
+        container.append(noteElement);
 
-            let checkListElement = document.createElement('ul');
-            checkListElement.classList.add('list-item-checklist')
-            for (const checkListItem of item.checkList) {
-                const element = document.createElement('li');
-                element.classList.add('checklist-item')
-                const textElement = document.createElement('span');
-                textElement.innerText = checkListItem.text;
-                const buttonElement = document.createElement('button');
-                buttonElement.innerText = 'X';
-                element.append(textElement);
-                element.append(buttonElement);
-                checkListElement.append(element);
-                console.log(checkListItem);
-                                
-            }
-            container.append(checkListElement);
+        let checkListElement = document.createElement('ul');
+        checkListElement.classList.add('list-item-checklist')
+        checkListElement.classList.add('before-list-item');
+        for (const checkListItem of item.checkList) {
+            const element = document.createElement('li');
+            element.classList.add('checklist-item')
+            const textElement = document.createElement('span');
+            textElement.innerText = checkListItem.text;
+            const buttonElement = document.createElement('button');
+            buttonElement.innerText = 'X';
+            element.append(textElement);
+            element.append(buttonElement);
+            checkListElement.append(element);
+            console.log(checkListItem);
+                            
+        }
+        container.append(checkListElement);
+        console.log(container);
+        
+        const buttonElement = document.createElement('button')
+        buttonElement.classList.add('list-item-remove');
+        buttonElement.innerText = "Delete";
+        buttonElement.onclick = () => {            
+            this.activeList.removeItem(item.id);
+            this.resetActiveListContainer();
+            this.drawActiveList();
+        };
+        container.append(buttonElement);
 
-            this.activeListContainer.append(container)
+        this.activeListContainer.append(container)
     }
 
     drawLists() {
@@ -70,9 +92,7 @@ class Controller {
 
         for (const list of this.todoLists) {
             listlistElement.append(this.drawList(list));
-        }
-        console.log(listlistElement);
-        
+        }        
         
         this.availableListsContainer.append(listlistElement);
     }

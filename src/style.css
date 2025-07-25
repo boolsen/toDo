@@ -34,71 +34,61 @@ li {
 .list-item {
     display: grid;
     grid-template-rows: auto auto auto;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 100px 90px;
     border: 1px solid black;
-    border-radius: 20px 20px;
+    border-radius: 50px 50px;
     background: rgb(229, 255, 112);
     margin: 10px 10px;
-    padding: 20px;
+    padding: 15px 15px;
     gap: 20px 10px;
+}
+
+.list-item-collapsed {
+    grid-template-rows: 1fr;
+    padding: 10px 10px;
+
+    .list-item-note{
+        display: none;
+    }
+    .list-item-description{
+        display:none;
+    }
+    .list-item-checklist{
+        display: none;
+    }
 }
 
 .list-item > * {
     background: white;
     margin: 5px;
-    border-radius: 10px 10px;
-    padding: 5px;
+    border-radius: 20px 20px;
+    padding: 10px 20px;
     position: relative;
+    box-shadow: 3px 2px rgb(170, 170, 170);
 }
 
-.list-item > *::before {
-    content: '';
-    position: relative;
-    left: -5px;
-    top: -15px;
-    background: white;
-    border: 1px solid black;
-    border-radius: 5px 5px;
-    padding: 5px;
-}
 
-.list-item-note::before {
-    content: 'note';
-}
-
-.list-item-title::before {
-    content: 'title';
-}
-
-.list-item-duedate::before {
-    content: 'due date';
-}
-
-.list-item-checklist::before {
-    content: 'check list';
-}
-
-.list-item-description::before {
-    content: 'description';
-}
-
-.list-item-title {
+.list-item > .list-item-title {
     grid-area: 1/1/2/2;
 }
 
-.list-item-description {
+.list-item > .list-item-description {
     grid-area: 2/1/4/2;
 }
 
-.list-item-duedate {
+.list-item > .list-item-duedate {
     grid-area: 1/2/2/3;
 }
 
-.list-item-note {
+.list-item > .list-item-note {
     grid-area: 2/2/3/3;
 }
 
-.list-item-checklist {
+.list-item > .list-item-checklist {
     grid-area: 3/2/4/3;
+}
+
+.list-item-remove {
+    grid-area: 1/4/2/5;
 }
 
