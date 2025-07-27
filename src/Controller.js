@@ -72,19 +72,31 @@ class Controller {
         }
         container.append(checkListElement);
         console.log(container);
-
+        
+        const icon = document.createElement('img');
+        icon.classList.add('list-item-options-icon');
+        container.append(icon);
+        
         const optionsMenu = document.createElement('ul');
         optionsMenu.classList.add('list-item-options');
-
+        
         const deleteItem = document.createElement('li');
         deleteItem.classList.add('list-item-delete');
+        deleteItem.innerText = "Delete"
+        deleteItem.onclick = () => {            
+            console.log('delete test');
+        };
         optionsMenu.append(deleteItem);
 
         const setPriority = document.createElement('li');
         setPriority.classList.add('list-item-set-priority');
+        setPriority.innerText = "Set priority"
+        setPriority.onclick = () => {            
+            console.log('priority test');
+        };
         optionsMenu.append(setPriority);
-        
-        const buttonElement = document.createElement('button')
+
+        /* const buttonElement = document.createElement('button')
         buttonElement.classList.add('list-item-remove');
         buttonElement.innerText = "Delete";
         buttonElement.onclick = () => {            
@@ -92,7 +104,9 @@ class Controller {
             this.resetActiveListContainer();
             this.drawActiveList();
         };
-        container.append(buttonElement);
+        container.append(buttonElement); */
+
+        container.append(optionsMenu);
 
         this.activeListContainer.append(container)
     }
