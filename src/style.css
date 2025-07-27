@@ -71,13 +71,7 @@ li {
     grid-template-rows: 1fr;
     padding: 10px 10px;
 
-    .list-item-note{
-        display: none;
-    }
-    .list-item-description{
-        display:none;
-    }
-    .list-item-checklist{
+    .list-item-note,.list-item-description,.list-item-checklist{
         display: none;
     }
 }
@@ -91,19 +85,27 @@ li {
     box-shadow: 3px 2px rgb(170, 170, 170);
 }
 
-.list-item > .list-item-options {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc;
+.list-item-options-container{
+    position: relative;
 }
-.list-item-options-icon:hover {
+.list-item-options {
     display: block;
     position: absolute;
-    right: 30px;
-    border-radius: 10px;
-    z-index: 100;
+    background-color: #fff;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+.list-item-options-container:hover {
+    .list-item-options{
+        display: block;
+        position: absolute;
+        top: 100%; 
+        left: 0;   
+        max-height: 200px;
+        border-radius: 10px;
+        z-index: 100;
+    }
 }
 
 .list-item-delete:hover, .list-item-set-priority:hover{

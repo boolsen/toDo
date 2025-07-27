@@ -72,10 +72,13 @@ class Controller {
         }
         container.append(checkListElement);
         console.log(container);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.classList.add('list-item-options-container');
         
         const icon = document.createElement('img');
         icon.classList.add('list-item-options-icon');
-        container.append(icon);
+        optionsContainer.append(icon);
         
         const optionsMenu = document.createElement('ul');
         optionsMenu.classList.add('list-item-options');
@@ -106,7 +109,8 @@ class Controller {
         };
         container.append(buttonElement); */
 
-        container.append(optionsMenu);
+        optionsContainer.append(optionsMenu);
+        container.append(optionsContainer);
 
         this.activeListContainer.append(container)
     }
