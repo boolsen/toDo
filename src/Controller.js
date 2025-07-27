@@ -72,6 +72,17 @@ class Controller {
         }
         container.append(checkListElement);
         console.log(container);
+
+        const optionsMenu = document.createElement('ul');
+        optionsMenu.classList.add('list-item-options');
+
+        const deleteItem = document.createElement('li');
+        deleteItem.classList.add('list-item-delete');
+        optionsMenu.append(deleteItem);
+
+        const setPriority = document.createElement('li');
+        setPriority.classList.add('list-item-set-priority');
+        optionsMenu.append(setPriority);
         
         const buttonElement = document.createElement('button')
         buttonElement.classList.add('list-item-remove');
