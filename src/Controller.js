@@ -29,29 +29,39 @@ class Controller {
         container.classList.add("list-item");
         container.classList.add("list-item-collapsed");
         container.classList.add('before-list-item');
-
-        let titleElement = document.createElement("h3");
+        container.addEventListener('click', (event) => {
+            if (event.target === event.currentTarget) {
+                this.expandItem(event.target); // ✅ 'this' is your class instance
+            } else {
+                console.log('Clicked on a child element.');
+            }
+        });
+        let titleElement = document.createElement("input");
+        titleElement.type = 'text';
         titleElement.classList.add("list-item-title");
         titleElement.classList.add('before-list-item');
-        titleElement.innerText = item.title;
+        titleElement.value = item.title;
         container.append(titleElement);
 
-        let descriptionElement = document.createElement('span');
+        let descriptionElement = document.createElement('textarea');
         descriptionElement.classList.add('list-item-description');
         descriptionElement.classList.add('before-list-item');
-        descriptionElement.innerText = item.description;
+        descriptionElement.value = item.description;
+        descriptionElement.rows = 5;
         container.append(descriptionElement);
 
-        let dueDateElement = document.createElement('span');
+        let dueDateElement = document.createElement('input');
         dueDateElement.classList.add('list-item-duedate');
         dueDateElement.classList.add('before-list-item');
-        dueDateElement.innerText = item.dueDate;
+        dueDateElement.type = 'text';
+        dueDateElement.value = item.dueDate;
         container.append(dueDateElement);
 
-        let noteElement = document.createElement('em');
+        let noteElement = document.createElement('input');
         noteElement.classList.add('list-item-note');
         noteElement.classList.add('before-list-item');
-        noteElement.innerText = item.notes;
+        noteElement.type = 'textarea'
+        noteElement.value = item.notes;
         container.append(noteElement);
 
         let checkListElement = document.createElement('ul');
@@ -114,6 +124,10 @@ class Controller {
         container.append(optionsContainer);
 
         this.activeListContainer.append(container)
+    }
+
+    expandItem(element) {
+        element.classList.toggle('list-item-collapsed');
     }
 
     drawLists() {
