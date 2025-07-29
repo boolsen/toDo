@@ -108,7 +108,30 @@ li {
     }
 }
 
-.list-item-delete:hover, .list-item-set-priority:hover{
+.priorities{
+    display: block;
+    position: absolute;
+    background-color: #fff;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.list-item-set-priority:hover{
+    transition: background-color 0.3s;
+    background-color: rgb(236, 236, 236);
+    .priorities{
+        display: block;
+        position: absolute;
+        top: 100%; 
+        left: 0;   
+        max-height: 200px;
+        border-radius: 10px;
+        z-index: 101;
+    }
+}
+
+.list-item-delete:hover{
     transition: background-color 0.3s;
     background-color: rgb(236, 236, 236);
 }

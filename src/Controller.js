@@ -15,6 +15,7 @@ class Controller {
     }
 
     drawActiveList() {
+        this.resetActiveListContainer();
         for (const item of this.activeList.items) {
             this.drawItem(item);
         }
@@ -32,8 +33,6 @@ class Controller {
         container.addEventListener('click', (event) => {
             if (event.target === event.currentTarget) {
                 this.expandItem(event.target); // ✅ 'this' is your class instance
-            } else {
-                console.log('Clicked on a child element.');
             }
         });
         let titleElement = document.createElement("input");
@@ -53,7 +52,7 @@ class Controller {
         let dueDateElement = document.createElement('input');
         dueDateElement.classList.add('list-item-duedate');
         dueDateElement.classList.add('before-list-item');
-        dueDateElement.type = 'text';
+        dueDateElement.type = 'date';
         dueDateElement.value = item.dueDate;
         container.append(dueDateElement);
 
@@ -98,7 +97,8 @@ class Controller {
         deleteItem.classList.add('list-item-delete');
         deleteItem.innerText = "Delete"
         deleteItem.onclick = () => {            
-            console.log('delete test');
+            this.activeList.removeItem(item.id);
+            this.drawActiveList();
         };
         optionsMenu.append(deleteItem);
 
@@ -109,6 +109,22 @@ class Controller {
             console.log('priority test');
         };
         optionsMenu.append(setPriority);
+
+        const priorities = document.createElement('ul');
+        priorities.classList.add('priorities');
+        const high = document.createElement('li');
+        high.classList.add('priority','high');
+        priorities.append(high)
+
+        const medium = document.createElement('li');
+        medium.classList.add('priority','medium');
+        priorities.append(medium)
+
+        const low = document.createElement('li');
+        low.classList.add('priority','low');
+        priorities.append(low)
+        setPriority.append(priorities);
+
 
         /* const buttonElement = document.createElement('button')
         buttonElement.classList.add('list-item-remove');
