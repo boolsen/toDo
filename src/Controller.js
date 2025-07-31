@@ -35,6 +35,8 @@ class Controller {
                 this.expandItem(event.target); // ✅ 'this' is your class instance
             }
         });
+        container.classList.add(item.priority);
+
         let titleElement = document.createElement("input");
         titleElement.type = 'text';
         titleElement.classList.add("list-item-title");
@@ -112,20 +114,23 @@ class Controller {
 
         const priorities = document.createElement('ul');
         priorities.classList.add('priorities');
+
         const high = document.createElement('li');
         high.classList.add('priority','high');
+        high.innerText = 'High';
         priorities.append(high)
 
         const medium = document.createElement('li');
         medium.classList.add('priority','medium');
+        medium.innerText = 'Medium';
         priorities.append(medium)
 
         const low = document.createElement('li');
         low.classList.add('priority','low');
+        low.innerText = 'Low';
         priorities.append(low)
-        setPriority.append(priorities);
-
-
+        
+        
         /* const buttonElement = document.createElement('button')
         buttonElement.classList.add('list-item-remove');
         buttonElement.innerText = "Delete";
@@ -133,9 +138,10 @@ class Controller {
             this.activeList.removeItem(item.id);
             this.resetActiveListContainer();
             this.drawActiveList();
-        };
-        container.append(buttonElement); */
-
+            };
+            container.append(buttonElement); */
+            
+        optionsMenu.append(priorities);
         optionsContainer.append(optionsMenu);
         container.append(optionsContainer);
 

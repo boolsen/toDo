@@ -28,7 +28,7 @@ class Item {
         this.description = null;
         this.dueDate = null;
         this.notes = null;
-        this.priority = null;
+        this.priority = 'low';
         this.id = crypto.randomUUID();
     }
 
