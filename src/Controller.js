@@ -82,7 +82,6 @@ class Controller {
                             
         }
         container.append(checkListElement);
-        console.log(container);
 
         const optionsContainer = document.createElement('div');
         optionsContainer.classList.add('list-item-options-container');
@@ -118,28 +117,29 @@ class Controller {
         const high = document.createElement('li');
         high.classList.add('priority','high');
         high.innerText = 'High';
+        high.onclick = () => {            
+            item.priority = 'high';
+            this.drawActiveList();
+        };
         priorities.append(high)
 
         const medium = document.createElement('li');
         medium.classList.add('priority','medium');
         medium.innerText = 'Medium';
+        medium.onclick = () => {            
+            item.priority = 'medium';
+            this.drawActiveList();
+        };
         priorities.append(medium)
 
         const low = document.createElement('li');
         low.classList.add('priority','low');
         low.innerText = 'Low';
-        priorities.append(low)
-        
-        
-        /* const buttonElement = document.createElement('button')
-        buttonElement.classList.add('list-item-remove');
-        buttonElement.innerText = "Delete";
-        buttonElement.onclick = () => {            
-            this.activeList.removeItem(item.id);
-            this.resetActiveListContainer();
+        low.onclick = () => {            
+            item.priority = 'low';
             this.drawActiveList();
-            };
-            container.append(buttonElement); */
+        };
+        priorities.append(low)
             
         optionsMenu.append(priorities);
         optionsContainer.append(optionsMenu);
@@ -161,6 +161,10 @@ class Controller {
         }        
         
         this.availableListsContainer.append(listlistElement);
+    }
+
+    changePriority(item, priority) {
+        item.priority = priority;
     }
 
     drawList(list) {
