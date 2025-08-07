@@ -15,6 +15,10 @@ li {
     padding: 20px;
 }
 
+.hidden{
+    display: none;
+}
+
 .main {
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -147,14 +151,37 @@ li {
     background-color: rgb(236, 236, 236);
 }
 
-.list-item.low{
+.list-item.low, .low{
     background-color: green;
 }
 
-.list-item.medium{
+.list-item.medium, .medium{
     background-color: yellow;
 }
 
-.list-item.high{
+.list-item.high, .high{
     background-color: red;
+}
+
+.add-item-modal-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: hsla(0, 100%, 0%, 0.6);
+    width: 100%;
+    height: 100%;
+}
+
+.add-item-modal{
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    left: 25svw;
+    top: 25svh;
+    background-color: white;
+    opacity: 100%;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 5%;
 }

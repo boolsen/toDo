@@ -12,5 +12,25 @@
         <div class="available-lists"></div>
         <div class="current-list-container"></div>
     </div>
+    <div class="add-item-modal-container hidden">
+        <div class="add-item-modal">
+            <h3>Add new task</h3>
+            <input name="title" type="text" class="title">
+            <label for="title">Title</label>
+            <input name="description" type="text" class="description">
+            <label for="description">description</label>
+            <input name="duedate" type="date" class="duedate">
+            <label for="duedate">due date</label>
+            <input nae="notes" type="text" class="notes">
+            <label for="notes">notes</label>
+            <select name="priority" id="priority-input" class="priority">
+                <option value="high" class="high">high</option>
+                <option value="medium" class="medium">medium</option>
+                <option value="low" class="low">low</option>
+            </select>
+            <label for="priority">priority</label>
+            <button class="add-item-btn">Create item</button>
+        </div>
+    </div>
 </body>
 </html>

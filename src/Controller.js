@@ -6,7 +6,11 @@ class Controller {
         this.todoLists = [this.activeList];
         this.activeListContainer = document.querySelector('.current-list-container')
         this.availableListsContainer = document.querySelector('.available-lists');
+        this.addItemModalContainer = document.querySelector('.add-item-modal-container');
         const self = this;
+        document.querySelector('.add-item-btn').onclick = () => {  
+            this.addItemToActiveList();
+        }
     }
 
     createTodoList(title) {
@@ -16,6 +20,16 @@ class Controller {
 
     drawActiveList() {
         this.resetActiveListContainer();
+        const addItemBtn = document.createElement('button');
+        addItemBtn.classList.add('add-item');
+        addItemBtn.innerText = "Add item";
+        /* Open modal to add item */
+        addItemBtn.onclick = () => {  
+            console.log(this.addItemModalContainer);
+            
+            this.addItemModalContainer.classList.remove('hidden');
+        }
+        this.activeListContainer.append(addItemBtn);
         for (const item of this.activeList.items) {
             this.drawItem(item);
         }
@@ -32,7 +46,7 @@ class Controller {
         container.classList.add('before-list-item');
         container.addEventListener('click', (event) => {
             if (event.target === event.currentTarget) {
-                this.expandItem(event.target); // ✅ 'this' is your class instance
+                this.expandItem(event.target);
             }
         });
         container.classList.add(item.priority);
@@ -172,6 +186,10 @@ class Controller {
         listElement.classList.add('list-element');
         listElement.innerText = list.title;
         return listElement;        
+    }
+
+    addItemToActiveList() {
+        this.addItemModalContainer.classList.add('hidden');
     }
 
 }
