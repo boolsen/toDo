@@ -185,3 +185,7 @@ li {
     grid-template-columns: 1fr;
     padding: 5%;
 }
+
+.values-required-text{
+    color: red;
+}

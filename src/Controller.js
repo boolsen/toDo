@@ -24,9 +24,7 @@ class Controller {
         addItemBtn.classList.add('add-item');
         addItemBtn.innerText = "Add item";
         /* Open modal to add item */
-        addItemBtn.onclick = () => {  
-            console.log(this.addItemModalContainer);
-            
+        addItemBtn.onclick = () => {              
             this.addItemModalContainer.classList.remove('hidden');
         }
         this.activeListContainer.append(addItemBtn);
@@ -50,6 +48,7 @@ class Controller {
             }
         });
         container.classList.add(item.priority);
+        
 
         let titleElement = document.createElement("input");
         titleElement.type = 'text';
@@ -91,9 +90,7 @@ class Controller {
             buttonElement.innerText = 'X';
             element.append(textElement);
             element.append(buttonElement);
-            checkListElement.append(element);
-            console.log(checkListItem);
-                            
+            checkListElement.append(element);                            
         }
         container.append(checkListElement);
 
@@ -120,9 +117,6 @@ class Controller {
         const setPriority = document.createElement('li');
         setPriority.classList.add('list-item-set-priority');
         setPriority.innerText = "Set priority"
-        setPriority.onclick = () => {            
-            console.log('priority test');
-        };
         optionsMenu.append(setPriority);
 
         const priorities = document.createElement('ul');
@@ -189,7 +183,45 @@ class Controller {
     }
 
     addItemToActiveList() {
+        const inputs = this.addItemModalContainer.querySelectorAll('input');
+        const priorityElement = this.addItemModalContainer.querySelector('select');
+        
+        const inputValues = {};
+        inputs.forEach(input =>     {
+            inputValues[input.name || input.className || input.id] = input.value;
+        });
+
+        console.log(inputValues.title);
+        
+
+        if (inputValues.title === "") {
+            document.querySelector('.values-required-text').classList.remove('hidden');
+            return
+        }
+        
         this.addItemModalContainer.classList.add('hidden');
+        document.querySelector('.values-required-text').classList.add('hidden');
+
+        let priorityValue = priorityElement.value;
+        //priorityValue = "low";
+        if (priorityValue === "") {
+            priorityValue = "low";
+        }        
+        
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        priorityElement.selectedIndex = -1;
+        
+        const newItem = new Item(inputValues["title"]);
+        newItem.description = inputValues.description;
+        newItem.notes = inputValues.notes;
+        newItem.dueDate = inputValues.duedate;
+        newItem.priority = priorityValue;
+        
+        this.activeList.addItem(newItem);    
+        this.drawActiveList();        
+
     }
 
 }

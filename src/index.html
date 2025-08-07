@@ -23,12 +23,14 @@
             <label for="duedate">due date</label>
             <input nae="notes" type="text" class="notes">
             <label for="notes">notes</label>
-            <select name="priority" id="priority-input" class="priority">
-                <option value="high" class="high">high</option>
-                <option value="medium" class="medium">medium</option>
+            <select name="priority" id="priority-input" class="priority" value="">
+                <option value="" disabled selected hidden>Select an option</option>
                 <option value="low" class="low">low</option>
+                <option value="medium" class="medium">medium</option>
+                <option value="high" class="high">high</option>
             </select>
             <label for="priority">priority</label>
+            <p class="values-required-text hidden">Title is required!</p>
             <button class="add-item-btn">Create item</button>
         </div>
     </div>
