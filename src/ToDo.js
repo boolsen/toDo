@@ -53,7 +53,11 @@ class Item {
 
     addCheckListItem(text) {
         this.checkList.push(new CheckListItem(text));
-    }    
+    }   
+    
+    removeCheckListItem(checkListItem){
+        this.checkList = this.checkList.filter(item => item !== checkListItem);
+    }
 }
 
 class CheckListItem {

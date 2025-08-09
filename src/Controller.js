@@ -42,8 +42,6 @@ class Controller {
     drawItem(item, expanded) {
         let container = document.createElement("div");
         container.classList.add("list-item");
-        console.log(Array.isArray(expanded));
-        console.log(expanded);
         
         if (expanded.length < 1 || !expanded.includes(item.id)){
             container.classList.add("list-item-collapsed");
@@ -99,6 +97,11 @@ class Controller {
             textElement.innerText = checkListItem.text;
             const buttonElement = document.createElement('button');
             buttonElement.innerText = 'X';
+            buttonElement.classList.add('remove-checklist-item');
+            buttonElement.onclick = () => {
+                item.removeCheckListItem(checkListItem);
+                this.drawActiveList();
+            }
             element.append(textElement);
             element.append(buttonElement);
             checkListElement.append(element);                            
@@ -200,10 +203,7 @@ class Controller {
         const inputValues = {};
         inputs.forEach(input =>     {
             inputValues[input.name || input.className || input.id] = input.value;
-        });
-
-        console.log(inputValues.title);
-        
+        });        
 
         if (inputValues.title === "") {
             document.querySelector('.values-required-text').classList.remove('hidden');
