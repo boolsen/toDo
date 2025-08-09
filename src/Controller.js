@@ -19,6 +19,8 @@ class Controller {
     }
 
     drawActiveList() {
+        const expanded = this.findAllExpandedListItems();
+        
         this.resetActiveListContainer();
         const addItemBtn = document.createElement('button');
         addItemBtn.classList.add('add-item');
@@ -28,8 +30,8 @@ class Controller {
             this.addItemModalContainer.classList.remove('hidden');
         }
         this.activeListContainer.append(addItemBtn);
-        for (const item of this.activeList.items) {
-            this.drawItem(item);
+        for (const item of this.activeList.items) {            
+            this.drawItem(item, expanded);
         }
     }
 
@@ -37,10 +39,17 @@ class Controller {
         this.activeListContainer.innerHTML = '';
     }
 
-    drawItem(item) {
+    drawItem(item, expanded) {
         let container = document.createElement("div");
         container.classList.add("list-item");
-        container.classList.add("list-item-collapsed");
+        console.log(Array.isArray(expanded));
+        console.log(expanded);
+        
+        if (expanded.length < 1 || !expanded.includes(item.id)){
+            container.classList.add("list-item-collapsed");
+        }
+
+        container.dataset.id = item.id;
         container.addEventListener('click', (event) => {
             if (event.target === event.currentTarget) {
                 this.expandItem(event.target);
@@ -223,6 +232,15 @@ class Controller {
         this.activeList.addItem(newItem);    
         this.drawActiveList();        
 
+    }
+
+    findAllExpandedListItems(){
+        const expanded = this.activeListContainer.querySelectorAll('.list-item:not(.list-item-collapsed)');
+        let expandedIds = [];
+        expanded.forEach(element => {
+            expandedIds.push(element.dataset.id);
+        });      
+        return expandedIds;
     }
 
 }
