@@ -19,6 +19,13 @@ class ToDoList {
     editTitle(newTitle) {
         this.title = newTitle;
     }
+
+    addCheckListItemToItem(itemID, text) {
+        const index = this.items.findIndex(arrayItem => arrayItem.id === itemID);        
+        if (index > -1) {
+            this.items[index].addCheckListItem(text);
+        }
+    }
 }
 
 class Item {

@@ -41,7 +41,6 @@ class Controller {
         let container = document.createElement("div");
         container.classList.add("list-item");
         container.classList.add("list-item-collapsed");
-        container.classList.add('before-list-item');
         container.addEventListener('click', (event) => {
             if (event.target === event.currentTarget) {
                 this.expandItem(event.target);
@@ -53,34 +52,37 @@ class Controller {
         let titleElement = document.createElement("input");
         titleElement.type = 'text';
         titleElement.classList.add("list-item-title");
-        titleElement.classList.add('before-list-item');
         titleElement.value = item.title;
         container.append(titleElement);
 
         let descriptionElement = document.createElement('textarea');
         descriptionElement.classList.add('list-item-description');
-        descriptionElement.classList.add('before-list-item');
         descriptionElement.value = item.description;
         descriptionElement.rows = 5;
         container.append(descriptionElement);
 
         let dueDateElement = document.createElement('input');
         dueDateElement.classList.add('list-item-duedate');
-        dueDateElement.classList.add('before-list-item');
         dueDateElement.type = 'date';
         dueDateElement.value = item.dueDate;
         container.append(dueDateElement);
 
         let noteElement = document.createElement('input');
         noteElement.classList.add('list-item-note');
-        noteElement.classList.add('before-list-item');
         noteElement.type = 'textarea'
         noteElement.value = item.notes;
         container.append(noteElement);
 
         let checkListElement = document.createElement('ul');
         checkListElement.classList.add('list-item-checklist')
-        checkListElement.classList.add('before-list-item');
+        const addButton = document.createElement('button');
+        addButton.innerText = "add checklist-item";
+        addButton.classList.add('add-button');
+        addButton.onclick = () => {
+            this.activeList.addCheckListItemToItem(item.id, 'testing');
+            this.drawActiveList();
+        }
+        checkListElement.append(addButton);
         for (const checkListItem of item.checkList) {
             const element = document.createElement('li');
             element.classList.add('checklist-item')
@@ -203,7 +205,6 @@ class Controller {
         document.querySelector('.values-required-text').classList.add('hidden');
 
         let priorityValue = priorityElement.value;
-        //priorityValue = "low";
         if (priorityValue === "") {
             priorityValue = "low";
         }        

@@ -64,6 +64,13 @@ li {
 
     .list-item-checklist {
         grid-area: 3/2/4/3;
+        .add-button{
+            color: red;
+        }
+        .checklist-item{
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     .list-item-options-icon {
