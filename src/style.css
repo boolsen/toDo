@@ -65,7 +65,11 @@ li {
     .list-item-checklist {
         grid-area: 3/2/4/3;
         .add-button{
-            color: red;
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: none;
+            border: none;
+            box-shadow: none;
         }
         .checklist-item{
             display: flex;
@@ -200,7 +204,7 @@ li {
 .chekclist-buttons{
     display: grid;
     grid-template-columns: auto auto;
-    gap: 20px;
+    gap: 10px;
 }
 
 .chekclist-buttons > * {
@@ -208,6 +212,7 @@ li {
     border-radius: 50%;
     box-shadow: none;
     padding: 3px;
+    background: none;
 }
 
 .change-status-checklist-item{

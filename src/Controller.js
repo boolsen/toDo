@@ -83,7 +83,7 @@ class Controller {
         let checkListElement = document.createElement('ul');
         checkListElement.classList.add('list-item-checklist')
         const addButton = document.createElement('button');
-        addButton.innerText = "add checklist-item";
+        addButton.innerText = "+";
         addButton.classList.add('add-button');
         addButton.onclick = () => {
             this.activeList.addCheckListItemToItem(item.id, 'testing');
