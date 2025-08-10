@@ -196,3 +196,31 @@ li {
 .values-required-text{
     color: red;
 }
+
+.chekclist-buttons{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 20px;
+}
+
+.chekclist-buttons > * {
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    padding: 3px;
+}
+
+.change-status-checklist-item{
+    background-color: none;
+    color: #9c9c9c;
+}
+
+.change-status-checklist-item.finished{
+    background-color: rgb(165, 255, 165);
+    color: green;
+}
+
+.remove-checklist-item{
+    background-color: rgb(255, 214, 214);
+    color: rgb(128, 0, 0);
+}

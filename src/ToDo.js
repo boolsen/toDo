@@ -58,6 +58,14 @@ class Item {
     removeCheckListItem(checkListItem){
         this.checkList = this.checkList.filter(item => item !== checkListItem);
     }
+
+    checkListItemChangeStatus(checkListItem) {
+        if (checkListItem.status){
+            checkListItem.status = false;
+        } else {
+            checkListItem.status = true;
+        }
+    }
 }
 
 class CheckListItem {

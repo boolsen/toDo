@@ -21,7 +21,7 @@ class Controller {
     drawActiveList() {
         const expanded = this.findAllExpandedListItems();
         
-        this.resetActiveListContainer();
+        this.resetActiveListContainer(); // Rewrite to create full element that is returned to this function and only remove content when drawing full new one?
         const addItemBtn = document.createElement('button');
         addItemBtn.classList.add('add-item');
         addItemBtn.innerText = "Add item";
@@ -95,15 +95,31 @@ class Controller {
             element.classList.add('checklist-item')
             const textElement = document.createElement('span');
             textElement.innerText = checkListItem.text;
-            const buttonElement = document.createElement('button');
-            buttonElement.innerText = 'X';
-            buttonElement.classList.add('remove-checklist-item');
-            buttonElement.onclick = () => {
+            const changeStatusCheckItemButton = document.createElement('button');
+            changeStatusCheckItemButton.classList.add('change-status-checklist-item');
+            if (checkListItem.status) {
+                changeStatusCheckItemButton.classList.add('finished');
+            } 
+            changeStatusCheckItemButton.innerText = 'V'
+            changeStatusCheckItemButton.onclick = () => {
+                item.checkListItemChangeStatus(checkListItem);
+                console.log(checkListItem.status);
+                
+                this.drawActiveList();
+            }
+            const addCheckItemButton = document.createElement('button');
+            addCheckItemButton.innerText = 'X';
+            addCheckItemButton.classList.add('remove-checklist-item');
+            addCheckItemButton.onclick = () => {
                 item.removeCheckListItem(checkListItem);
                 this.drawActiveList();
             }
             element.append(textElement);
-            element.append(buttonElement);
+            const buttonDiv = document.createElement('div');
+            buttonDiv.classList.add('chekclist-buttons')
+            buttonDiv.append(changeStatusCheckItemButton);
+            buttonDiv.append(addCheckItemButton);
+            element.append(buttonDiv);
             checkListElement.append(element);                            
         }
         container.append(checkListElement);
