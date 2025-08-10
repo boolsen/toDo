@@ -74,6 +74,10 @@ class CheckListItem {
         this.status = false;
         this.timeStamp = Date.now();
     }
+
+    updateText(text) {
+        this.text = text;        
+    }
 }
 
 export {ToDoList, Item, CheckListItem};

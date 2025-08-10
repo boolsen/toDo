@@ -1,5 +1,8 @@
 :root {
     --bg-clr: yellow;
+    --low: rgb(67, 255, 67);
+    --medium: rgb(255, 255, 83);
+    --high: rgb(253, 71, 71);
 }
 
 * {
@@ -74,6 +77,7 @@ li {
         .checklist-item{
             display: flex;
             justify-content: space-between;
+            gap: 20px;
         }
     }
 
@@ -163,15 +167,15 @@ li {
 }
 
 .list-item.low, .low{
-    background-color: green;
+    background-color: var(--low);
 }
 
 .list-item.medium, .medium{
-    background-color: yellow;
+    background-color: var(--medium);
 }
 
 .list-item.high, .high{
-    background-color: red;
+    background-color: var(--high);
 }
 
 .add-item-modal-container{
@@ -228,4 +232,14 @@ li {
 .remove-checklist-item{
     background-color: rgb(255, 214, 214);
     color: rgb(128, 0, 0);
+}
+
+.checklist-item > input {
+    border: none;
+    padding: 4px 10px;
+    &:focus{
+        outline: none;
+        border: 1px solid grey;
+        border-radius: 5px;
+    }
 }

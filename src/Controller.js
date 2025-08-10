@@ -93,8 +93,17 @@ class Controller {
         for (const checkListItem of item.checkList) {
             const element = document.createElement('li');
             element.classList.add('checklist-item')
-            const textElement = document.createElement('span');
-            textElement.innerText = checkListItem.text;
+            const textElement = document.createElement('input');
+            let typingTimer;
+            textElement.addEventListener('keyup', () => {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(checkListItem.updateText(textElement.value), 1000);
+            });
+            textElement.addEventListener('keydown', () => {
+                clearTimeout(typingTimer);
+            });
+
+            textElement.value = checkListItem.text;
             const changeStatusCheckItemButton = document.createElement('button');
             changeStatusCheckItemButton.classList.add('change-status-checklist-item');
             if (checkListItem.status) {
