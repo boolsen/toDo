@@ -23,7 +23,8 @@ class ToDoList {
     addCheckListItemToItem(itemID, text) {
         const index = this.items.findIndex(arrayItem => arrayItem.id === itemID);        
         if (index > -1) {
-            this.items[index].addCheckListItem(text);
+            const item = this.items[index].addCheckListItem(text);
+            return item;
         }
     }
 }
@@ -52,7 +53,9 @@ class Item {
     }
 
     addCheckListItem(text) {
-        this.checkList.push(new CheckListItem(text));
+        const item = new CheckListItem(text);
+        this.checkList.push(item);
+        return item;
     }   
     
     removeCheckListItem(checkListItem){

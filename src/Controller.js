@@ -7,6 +7,12 @@ class Controller {
         this.activeListContainer = document.querySelector('.current-list-container')
         this.availableListsContainer = document.querySelector('.available-lists');
         this.addItemModalContainer = document.querySelector('.add-item-modal-container');
+        this.addItemModalContainer.onclick = (event) => {
+            if (event.target === this.addItemModalContainer) {
+                this.addItemModalContainer.classList.add('hidden');
+                this.resetModal();                
+            }
+        };
         const self = this;
         document.querySelector('.add-item-btn').onclick = () => {  
             this.addItemToActiveList();
@@ -24,7 +30,7 @@ class Controller {
         this.resetActiveListContainer(); // Rewrite to create full element that is returned to this function and only remove content when drawing full new one?
         const addItemBtn = document.createElement('button');
         addItemBtn.classList.add('add-item');
-        addItemBtn.innerText = "Add item";
+        addItemBtn.innerText = "+";
         /* Open modal to add item */
         addItemBtn.onclick = () => {              
             this.addItemModalContainer.classList.remove('hidden');
@@ -80,57 +86,7 @@ class Controller {
         noteElement.value = item.notes;
         container.append(noteElement);
 
-        let checkListElement = document.createElement('ul');
-        checkListElement.classList.add('list-item-checklist')
-        const addButton = document.createElement('button');
-        addButton.innerText = "+";
-        addButton.classList.add('add-button');
-        addButton.onclick = () => {
-            this.activeList.addCheckListItemToItem(item.id, 'testing');
-            this.drawActiveList();
-        }
-        checkListElement.append(addButton);
-        for (const checkListItem of item.checkList) {
-            const element = document.createElement('li');
-            element.classList.add('checklist-item')
-            const textElement = document.createElement('input');
-            let typingTimer;
-            textElement.addEventListener('keyup', () => {
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(checkListItem.updateText(textElement.value), 1000);
-            });
-            textElement.addEventListener('keydown', () => {
-                clearTimeout(typingTimer);
-            });
-
-            textElement.value = checkListItem.text;
-            const changeStatusCheckItemButton = document.createElement('button');
-            changeStatusCheckItemButton.classList.add('change-status-checklist-item');
-            if (checkListItem.status) {
-                changeStatusCheckItemButton.classList.add('finished');
-            } 
-            changeStatusCheckItemButton.innerText = 'V'
-            changeStatusCheckItemButton.onclick = () => {
-                item.checkListItemChangeStatus(checkListItem);
-                console.log(checkListItem.status);
-                
-                this.drawActiveList();
-            }
-            const addCheckItemButton = document.createElement('button');
-            addCheckItemButton.innerText = 'X';
-            addCheckItemButton.classList.add('remove-checklist-item');
-            addCheckItemButton.onclick = () => {
-                item.removeCheckListItem(checkListItem);
-                this.drawActiveList();
-            }
-            element.append(textElement);
-            const buttonDiv = document.createElement('div');
-            buttonDiv.classList.add('chekclist-buttons')
-            buttonDiv.append(changeStatusCheckItemButton);
-            buttonDiv.append(addCheckItemButton);
-            element.append(buttonDiv);
-            checkListElement.append(element);                            
-        }
+        const checkListElement = this.createChecklistElement(item);
         container.append(checkListElement);
 
         const optionsContainer = document.createElement('div');
@@ -259,6 +215,17 @@ class Controller {
 
     }
 
+    resetModal(){
+        const nodelist = this.addItemModalContainer.querySelectorAll('input,select');
+        nodelist.forEach(element => {            
+            if (element.tagName === 'INPUT') {
+                element.value = '';
+            } else {
+                element.selectedIndex = -1;
+            }        
+        });        
+    }
+
     findAllExpandedListItems(){
         const expanded = this.activeListContainer.querySelectorAll('.list-item:not(.list-item-collapsed)');
         let expandedIds = [];
@@ -268,6 +235,67 @@ class Controller {
         return expandedIds;
     }
 
+    createChecklistElement(item){
+        const checkListElement = document.createElement('ul');
+        checkListElement.classList.add('list-item-checklist')
+        const addButton = document.createElement('button');
+        addButton.innerText = "+";
+        addButton.classList.add('add-button');
+        addButton.onclick = () => {
+            const newCheckListItem = this.activeList.addCheckListItemToItem(item.id, '');
+            const newCheckListItemEle = this.createChecklistItemElement(newCheckListItem, item);
+            checkListElement.append(newCheckListItemEle);
+            const newInput = newCheckListItemEle.querySelector('input');
+            newInput.focus();
+        }
+        checkListElement.append(addButton);
+        for (const checkListItem of item.checkList) {
+            const checkListItemElement = this.createChecklistItemElement(checkListItem, item);  
+            checkListElement.append(checkListItemElement);            
+        }
+        return checkListElement;
+    }
+
+    createChecklistItemElement(checkListItem, item){
+        const element = document.createElement('li');
+        element.classList.add('checklist-item')
+        const textElement = document.createElement('input');
+        let typingTimer;
+        textElement.addEventListener('keyup', () => {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(checkListItem.updateText(textElement.value), 1000);
+        });
+        textElement.addEventListener('keydown', () => {
+            clearTimeout(typingTimer);
+        });
+
+        textElement.value = checkListItem.text;
+        const changeStatusCheckItemButton = document.createElement('button');
+        changeStatusCheckItemButton.classList.add('change-status-checklist-item');
+        if (checkListItem.status) {
+            changeStatusCheckItemButton.classList.add('finished');
+        } 
+        changeStatusCheckItemButton.innerText = 'V'
+        changeStatusCheckItemButton.onclick = () => {
+            item.checkListItemChangeStatus(checkListItem);                
+            changeStatusCheckItemButton.classList.toggle('finished');
+        }
+        const removeCheckItemButton = document.createElement('button');
+        removeCheckItemButton.innerText = 'X';
+        removeCheckItemButton.classList.add('remove-checklist-item');
+        removeCheckItemButton.onclick = () => {
+            item.removeCheckListItem(checkListItem);
+            this.drawActiveList();
+        }
+        element.append(textElement);
+        const buttonDiv = document.createElement('div');
+        buttonDiv.classList.add('chekclist-buttons')
+        buttonDiv.append(changeStatusCheckItemButton);
+        buttonDiv.append(removeCheckItemButton);
+        element.append(buttonDiv);
+        
+        return element;
+    }
 }
 
 let controller = new Controller();
