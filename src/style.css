@@ -39,14 +39,24 @@ li {
     font-size: 1.5rem;
     width: 80%;
     outline: none;
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgb(236, 236, 236);
     border-radius: 10px;
     padding: 5px 10px;
     &:focus{
-        transition: border-width 0.5s ease-in-out,
+        transition: border-width 0.2s ease-in-out,
             border-color 0.5s ease-in-out;
         border: 2px solid rgb(184, 223, 184);
     }
+}
+
+@keyframes blink-red-border {
+  0%, 100% { border-color: red; }
+  50% { border-color: transparent; }
+}
+
+.empty-title-error{
+    border: 2px solid red; /* initial color */
+    animation: blink-red-border 1s step-end infinite;
 }
 
 .current-list-container {

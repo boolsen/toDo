@@ -180,11 +180,7 @@ class Controller {
         listContainer.append(newListEle);
         newListEle.firstChild.focus();
     }
-
-    changePriority(item, priority) {
-        item.priority = priority;
-    }
-
+    
     createListElement(list) {
         const listElement = document.createElement('li');
         listElement.classList.add('list-element');
@@ -192,10 +188,17 @@ class Controller {
         inputEle.classList.add('title-input');
         inputEle.type = 'text';
         inputEle.value = list.title;
+        inputEle.addEventListener('blur',(e) => {
+            this.validateListName(inputEle,list);
+        });
         listElement.append(inputEle);
         return listElement;        
     }
-
+    
+    changePriority(item, priority) {
+        item.priority = priority;
+    }
+    
     addItemToActiveList() {
         const inputs = this.addItemModalContainer.querySelectorAll('input');
         const priorityElement = this.addItemModalContainer.querySelector('select');
@@ -243,6 +246,25 @@ class Controller {
                 element.selectedIndex = -1;
             }        
         });        
+    }
+
+    validateListName(inputEle, list){
+        if (inputEle.value !== ''){
+            if (inputEle.value !== list.title) {
+                list.title = inputEle.value;        
+            }         
+        } else if (list.items.length === 0){
+            this.todoLists = this.todoLists.filter(item => item !== list);
+            inputEle.parentNode.remove();
+        } else {
+            inputEle.classList.add('empty-title-error');
+            console.log(inputEle.classList);
+            setTimeout(() => {
+                inputEle.classList.remove("empty-title-error");
+            }, 2000);
+            console.log(inputEle.classList);
+            inputEle.value = list.title;            
+        }
     }
 
     findAllExpandedListItems(){
