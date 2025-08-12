@@ -156,24 +156,43 @@ class Controller {
     }
 
     drawLists() {
+        const addListBtn = document.createElement('button');
+        addListBtn.classList.add('add-item');
+        addListBtn.innerText = "+";
+
         const listlistElement = document.createElement('ul');
         listlistElement.classList.add('list-list')
 
         for (const list of this.todoLists) {
-            listlistElement.append(this.drawList(list));
-        }        
-        
+            listlistElement.append(this.createListElement(list));
+        }     
+        addListBtn.onclick = () => {     
+            const newListEle = this.addList(listlistElement);
+        }
+        this.availableListsContainer.append(addListBtn);        
         this.availableListsContainer.append(listlistElement);
+    }
+
+    addList(listContainer){
+        const newList = new ToDoList('');
+        this.todoLists.push(newList);
+        const newListEle = this.createListElement(newList);
+        listContainer.append(newListEle);
+        newListEle.firstChild.focus();
     }
 
     changePriority(item, priority) {
         item.priority = priority;
     }
 
-    drawList(list) {
+    createListElement(list) {
         const listElement = document.createElement('li');
         listElement.classList.add('list-element');
-        listElement.innerText = list.title;
+        const inputEle = document.createElement('input');
+        inputEle.classList.add('title-input');
+        inputEle.type = 'text';
+        inputEle.value = list.title;
+        listElement.append(inputEle);
         return listElement;        
     }
 
