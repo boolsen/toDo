@@ -192,7 +192,21 @@ class Controller {
             this.validateListName(inputEle,list);
         });
         listElement.append(inputEle);
+        const viewListBtn = document.createElement('button');
+        viewListBtn.classList.add('view-list-button');
+        viewListBtn.innerText = '👁️';
+        viewListBtn.onclick = () => {
+            this.viewList(list);
+        }
+        listElement.append(viewListBtn);
+        
+
         return listElement;        
+    }
+
+    viewList(list){
+        this.activeList = list;
+        this.drawActiveList();
     }
     
     changePriority(item, priority) {
@@ -288,6 +302,12 @@ class Controller {
             checkListElement.append(newCheckListItemEle);
             const newInput = newCheckListItemEle.querySelector('input');
             newInput.focus();
+            newInput.addEventListener('blur',()=>{
+                if (!newInput.value){
+                    item.removeCheckListItem(newCheckListItem);
+                    newCheckListItemEle.remove();
+                }
+            });
         }
         checkListElement.append(addButton);
         for (const checkListItem of item.checkList) {

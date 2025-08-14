@@ -25,7 +25,7 @@ li {
 
 .main {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: 150px 1fr;
     padding: 5svh;
 }
@@ -52,6 +52,17 @@ li {
 @keyframes blink-red-border {
   0%, 100% { border-color: red; }
   50% { border-color: transparent; }
+}
+
+.list-element{
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.view-list-button{
+    background: none;
+    border: none;
+    color: red;
 }
 
 .empty-title-error{
