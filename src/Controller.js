@@ -1,4 +1,5 @@
 import { ToDoList, Item, CheckListItem } from "./ToDo.js";
+import {SaveSystem} from "./saveSystem.js";
 
 class Controller {
     constructor(){
@@ -7,6 +8,7 @@ class Controller {
         this.activeListContainer = document.querySelector('.current-list-container')
         this.availableListsContainer = document.querySelector('.available-lists');
         this.addItemModalContainer = document.querySelector('.add-item-modal-container');
+        this.saver = new SaveSystem();
         this.addItemModalContainer.onclick = (event) => {
             if (event.target === this.addItemModalContainer) {
                 this.addItemModalContainer.classList.add('hidden');
@@ -17,11 +19,68 @@ class Controller {
         document.querySelector('.add-item-btn').onclick = () => {  
             this.addItemToActiveList();
         }
+        this.loadFromLocalStorage();
+        
+        this.drawActiveList();
+        this.drawLists();        
     }
 
     createTodoList(title) {
         this.activeList = new ToDoList(title);
-        this.todoLists.push(this.activeList);
+        this.todoLists.push(this.activeList);        
+
+        this.saveToLocalStorage();
+    }
+
+    saveToLocalStorage(){
+        this.saver.saveData("lists",this.todoLists);
+    }
+
+    loadFromLocalStorage(){
+        const loadedData = this.saver.loadData("lists");
+        if (loadedData){
+            const revivedClasses = this.reviveClasses(loadedData);
+            console.log('revivedclasses');
+            console.log(revivedClasses);
+            
+            
+            this.todoLists = revivedClasses;
+            if(revivedClasses.length > 0){
+                this.activeList = revivedClasses[0];
+            }
+            
+        }     
+    }
+
+    reviveClasses(loadedData) {
+        const todoListsRevived = [];
+
+        loadedData.forEach(rawList => {
+            const tmpList = new ToDoList('');
+            Object.assign(tmpList, rawList);
+
+            // Rebuild items from scratch
+            tmpList.items = rawList.items.map(rawItem => {
+                const tmpItem = new Item('');
+                Object.assign(tmpItem, rawItem);
+
+                // Rebuild checklist from scratch
+                tmpItem.checkList = rawItem.checkList.map(rawCheckListItem => {
+                    const tmpCheckListItem = new CheckListItem('');
+                    Object.assign(tmpCheckListItem, rawCheckListItem);
+                    return tmpCheckListItem;
+                });
+
+                return tmpItem;
+            });
+
+            todoListsRevived.push(tmpList);
+        });
+
+        console.log(todoListsRevived);
+        
+
+        return todoListsRevived;
     }
 
     drawActiveList() {
@@ -122,6 +181,7 @@ class Controller {
         high.innerText = 'High';
         high.onclick = () => {            
             item.priority = 'high';
+            this.saveToLocalStorage();
             this.drawActiveList();
         };
         priorities.append(high)
@@ -131,6 +191,7 @@ class Controller {
         medium.innerText = 'Medium';
         medium.onclick = () => {            
             item.priority = 'medium';
+            this.saveToLocalStorage();
             this.drawActiveList();
         };
         priorities.append(medium)
@@ -140,6 +201,7 @@ class Controller {
         low.innerText = 'Low';
         low.onclick = () => {            
             item.priority = 'low';
+            this.saveToLocalStorage();
             this.drawActiveList();
         };
         priorities.append(low)
@@ -156,6 +218,9 @@ class Controller {
     }
 
     drawLists() {
+        if(document.querySelector('.list-list')){
+            return;
+        }
         const addListBtn = document.createElement('button');
         addListBtn.classList.add('add-item');
         addListBtn.innerText = "+";
@@ -174,8 +239,9 @@ class Controller {
     }
 
     addList(listContainer){
-        const newList = new ToDoList('');
+        const newList = new ToDoList('');        
         this.todoLists.push(newList);
+        this.saveToLocalStorage();
         const newListEle = this.createListElement(newList);
         listContainer.append(newListEle);
         newListEle.firstChild.focus();
@@ -205,12 +271,15 @@ class Controller {
     }
 
     viewList(list){
+        console.log('viewlist');
+        
         this.activeList = list;
         this.drawActiveList();
     }
     
     changePriority(item, priority) {
         item.priority = priority;
+        this.saveToLocalStorage();
     }
     
     addItemToActiveList() {
@@ -245,8 +314,12 @@ class Controller {
         newItem.notes = inputValues.notes;
         newItem.dueDate = inputValues.duedate;
         newItem.priority = priorityValue;
+
+        console.log(this.todoLists[0] instanceof ToDoList);
         
-        this.activeList.addItem(newItem);    
+        
+        this.activeList.addItem(newItem); 
+        this.saveToLocalStorage();   
         this.drawActiveList();        
 
     }
@@ -265,18 +338,17 @@ class Controller {
     validateListName(inputEle, list){
         if (inputEle.value !== ''){
             if (inputEle.value !== list.title) {
-                list.title = inputEle.value;        
+                list.title = inputEle.value; 
+                this.saveToLocalStorage();
             }         
         } else if (list.items.length === 0){
             this.todoLists = this.todoLists.filter(item => item !== list);
             inputEle.parentNode.remove();
         } else {
             inputEle.classList.add('empty-title-error');
-            console.log(inputEle.classList);
             setTimeout(() => {
                 inputEle.classList.remove("empty-title-error");
             }, 2000);
-            console.log(inputEle.classList);
             inputEle.value = list.title;            
         }
     }
@@ -298,6 +370,7 @@ class Controller {
         addButton.classList.add('add-button');
         addButton.onclick = () => {
             const newCheckListItem = this.activeList.addCheckListItemToItem(item.id, '');
+            this.saveToLocalStorage();
             const newCheckListItemEle = this.createChecklistItemElement(newCheckListItem, item);
             checkListElement.append(newCheckListItemEle);
             const newInput = newCheckListItemEle.querySelector('input');
@@ -305,6 +378,7 @@ class Controller {
             newInput.addEventListener('blur',()=>{
                 if (!newInput.value){
                     item.removeCheckListItem(newCheckListItem);
+                    this.saveToLocalStorage();
                     newCheckListItemEle.remove();
                 }
             });
@@ -324,8 +398,10 @@ class Controller {
         let typingTimer;
         textElement.addEventListener('keyup', () => {
             clearTimeout(typingTimer);
-            typingTimer = setTimeout(checkListItem.updateText(textElement.value), 1000);
-        });
+            typingTimer = setTimeout(() => {
+                checkListItem.updateText(textElement.value);
+                this.saveToLocalStorage();
+            })}, 1000);
         textElement.addEventListener('keydown', () => {
             clearTimeout(typingTimer);
         });
@@ -338,7 +414,8 @@ class Controller {
         } 
         changeStatusCheckItemButton.innerText = 'V'
         changeStatusCheckItemButton.onclick = () => {
-            item.checkListItemChangeStatus(checkListItem);                
+            item.checkListItemChangeStatus(checkListItem);   
+            this.saveToLocalStorage();             
             changeStatusCheckItemButton.classList.toggle('finished');
         }
         const removeCheckItemButton = document.createElement('button');
@@ -346,6 +423,7 @@ class Controller {
         removeCheckItemButton.classList.add('remove-checklist-item');
         removeCheckItemButton.onclick = () => {
             item.removeCheckListItem(checkListItem);
+            this.saveToLocalStorage();
             this.drawActiveList();
         }
         element.append(textElement);
