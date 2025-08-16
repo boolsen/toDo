@@ -40,9 +40,6 @@ class Controller {
         const loadedData = this.saver.loadData("lists");
         if (loadedData){
             const revivedClasses = this.reviveClasses(loadedData);
-            console.log('revivedclasses');
-            console.log(revivedClasses);
-            
             
             this.todoLists = revivedClasses;
             if(revivedClasses.length > 0){
@@ -75,10 +72,7 @@ class Controller {
             });
 
             todoListsRevived.push(tmpList);
-        });
-
-        console.log(todoListsRevived);
-        
+        });        
 
         return todoListsRevived;
     }
@@ -90,7 +84,7 @@ class Controller {
         const addItemBtn = document.createElement('button');
         addItemBtn.classList.add('add-item');
         addItemBtn.innerText = "+";
-        /* Open modal to add item */
+        /* Open modal to add item */        
         addItemBtn.onclick = () => {              
             this.addItemModalContainer.classList.remove('hidden');
         }
@@ -270,9 +264,7 @@ class Controller {
         return listElement;        
     }
 
-    viewList(list){
-        console.log('viewlist');
-        
+    viewList(list){                
         this.activeList = list;
         this.drawActiveList();
     }
@@ -313,12 +305,14 @@ class Controller {
         newItem.description = inputValues.description;
         newItem.notes = inputValues.notes;
         newItem.dueDate = inputValues.duedate;
-        newItem.priority = priorityValue;
-
-        console.log(this.todoLists[0] instanceof ToDoList);
+        newItem.priority = priorityValue;  
         
+        console.log(this.activeList);
+        
+        console.log(this.activeList.items);
         
         this.activeList.addItem(newItem); 
+        console.log(this.activeList.items);
         this.saveToLocalStorage();   
         this.drawActiveList();        
 
@@ -435,8 +429,9 @@ class Controller {
         
         return element;
     }
+    
 }
 
-let controller = new Controller();
+//let controller = new Controller();
 
 export {Controller, ToDoList, Item, CheckListItem}
